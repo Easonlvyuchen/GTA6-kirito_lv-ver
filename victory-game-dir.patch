@@ -1,0 +1,15 @@
+diff --git a/apps/victory/src/run.rs b/apps/victory/src/run.rs
+index 6706904..bc7e949 100644
+--- a/apps/victory/src/run.rs
++++ b/apps/victory/src/run.rs
+@@ -84,7 +84,9 @@ pub fn run(
+         HostPolicy::default()
+     });
+     let wanted = |dll: &str| title_dll(&resolver.host, dll);
+-    let title_dir = exe.parent().unwrap_or(Path::new("."));
++    // The executable and the package can be supplied separately.
++    let title_dir = cfg.game_dir.as_deref()
++        .unwrap_or_else(|| exe.parent().unwrap_or(Path::new(".")));
+     // A missing manifest leaves id 0 and no storage quota.
+     let manifest =
+         std::fs::read_to_string(title_dir.join("MicrosoftGame.config")).unwrap_or_default();
